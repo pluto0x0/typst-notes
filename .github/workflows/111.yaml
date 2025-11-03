@@ -36,11 +36,11 @@ jobs:
       # 4️⃣ 生成静态文件列表 index.html（核心步骤）
       - name: Directory Listing
         uses: gacts/directory-listing@v1.0.2
-        with:
-          source: dist/pdfs          # 要扫描的文件夹
-          output: dist/index.html    # 输出 HTML 文件路径
-          title: "Typst PDF 文件列表"
-          description: "由 GitHub Actions 自动生成的 PDF 文件索引。"
+        # with:
+        #   source: dist/pdfs          # 要扫描的文件夹
+        #   output: dist/index.html    # 输出 HTML 文件路径
+        #   title: "Typst PDF 文件列表"
+        #   description: "由 GitHub Actions 自动生成的 PDF 文件索引。"
 
       # 5️⃣ 上传 Pages 工件
       - name: Upload Pages artifact
