@@ -26,11 +26,10 @@ jobs:
       - name: Build all Typst files to PDF
         shell: bash
         run: |
-          mkdir -p dist/pdfs
           for f in src/*.typ; do
             base=$(basename "$f" .typ)
-            echo "Compiling $f -> dist/pdfs/${base}.pdf"
-            typst compile "$f" "dist/pdfs/${base}.pdf"
+            echo "Compiling $f -> ${base}.pdf"
+            typst compile "$f" "${base}.pdf"
           done
 
       # 4️⃣ 生成静态文件列表 index.html（核心步骤）
