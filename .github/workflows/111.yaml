@@ -26,7 +26,7 @@ jobs:
       - name: Build all Typst files to PDF
         shell: bash
         run: |
-          mkdir -p dist/
+          mkdir -p dist
           for f in src/*.typ; do
             base=$(basename "$f" .typ)
             echo "Compiling $f -> dist/${base}.pdf"
@@ -36,8 +36,8 @@ jobs:
       # 4️⃣ 生成静态文件列表 index.html（核心步骤）
       - name: Directory Listing
         uses: gacts/directory-listing@v1.0.2
-        # with:
-        #   source: dist/pdfs          # 要扫描的文件夹
+        with:
+          target: dist          # 要扫描的文件夹
         #   output: dist/index.html    # 输出 HTML 文件路径
         #   title: "Typst PDF 文件列表"
         #   description: "由 GitHub Actions 自动生成的 PDF 文件索引。"
