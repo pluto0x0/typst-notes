@@ -127,9 +127,9 @@ $
   - 对于足够大的 $T$，$q(x_T | x_0) approx NN(0, I)$，而先验 $p_theta (x_T)$ 被定义为 $NN(0, I)$
   - 因此该项可以*忽略不计*.
 
-== Score-based Diffusion Model & Langevin dynamics
+= Score-based Diffusion Model & Langevin dynamics
 
-===  Langevin dynamics
+==  Langevin dynamics
 
 定义 score 函数，即数据分布的对数梯度：
 
@@ -147,7 +147,7 @@ Langevin dynamics 描述的是粒子在势能场中的布朗运动，是一种�
 
 在扩散模型中，这就是反向去噪采样的核心形式。
 
-=== Tweedie 定理
+== Tweedie 定理
 
 Tweedie 定理指出，对于 $x ~ p(x) = cal(N)(x; mu, Sigma)$，
 
@@ -157,7 +157,7 @@ $
 
 即使用数据 $x$ 和 score 函数，可以估计出原始均值 $mu$.
 
-=== 去噪问题
+== 去噪问题
 
 考虑加噪过程
 
@@ -172,7 +172,7 @@ $
   - 根据 Tweedie 定理，预测 score 隐式包含了一个去噪器 $EE[x|y]$.
   - 如果步长 $tau$ 递减，则类似于模拟退火，最终收敛到 $p(y)$ 的极大值点，即 $x$ 的估计.
 
-== 条件 Diffusion Model
+= 条件 Diffusion Model
 
 给定条件 $c$, 需要
 
@@ -191,7 +191,7 @@ $
 classifier guidance：基于 $x_t$ 的分类器，通过反向传播获取梯度。
 通过给 $nabla_x log p(c|x)$ 乘以一个系数 $s > 1$，可以增强条件信息的影响，得到更符合条件的样本生成结果.
 
-== Classifier-Free Diffusion Guidance (CFG)
+= Classifier-Free Diffusion Guidance (CFG)
 
 不使用分类器，而是定义两种去噪模型的score：
 
