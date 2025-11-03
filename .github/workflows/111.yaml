@@ -26,10 +26,11 @@ jobs:
       - name: Build all Typst files to PDF
         shell: bash
         run: |
+          mkdir -p dist/
           for f in src/*.typ; do
             base=$(basename "$f" .typ)
-            echo "Compiling $f -> ${base}.pdf"
-            typst compile "$f" "${base}.pdf"
+            echo "Compiling $f -> dist/${base}.pdf"
+            typst compile "$f" "dist/${base}.pdf"
           done
 
       # 4️⃣ 生成静态文件列表 index.html（核心步骤）
@@ -45,7 +46,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: dist
 
   # 6️⃣ 部署阶段
   deploy:
