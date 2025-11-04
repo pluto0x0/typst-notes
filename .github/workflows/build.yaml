@@ -30,7 +30,6 @@ jobs:
       - name: Build all Typst files to PDF
         shell: bash
         run: |
-          run: |
           mkdir -p dist
           shopt -s globstar  # 启用递归通配符 **/*
           for f in src/**/*.typ; do
