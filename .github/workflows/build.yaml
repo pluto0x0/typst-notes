@@ -30,11 +30,21 @@ jobs:
       - name: Build all Typst files to PDF
         shell: bash
         run: |
+          run: |
           mkdir -p dist
-          for f in src/*.typ; do
+          shopt -s globstar  # 启用递归通配符 **/*
+          for f in src/**/*.typ; do
+            # 去掉 src/ 前缀，得到相对路径
+            rel="${f#src/}"
+            # 取出目录路径部分
+            dir=$(dirname "$rel")
+            # 取出文件名（不带扩展名）
             base=$(basename "$f" .typ)
-            echo "Compiling $f -> dist/${base}.pdf"
-            typst compile "$f" "dist/${base}.pdf"
+            # 创建对应的 dist 子目录
+            mkdir -p "dist/$dir"
+            # 编译 Typst 文件
+            echo "Compiling $f -> dist/$dir/${base}.pdf"
+            typst compile "$f" "dist/$dir/${base}.pdf"
           done
 
       - name: Directory Listing
