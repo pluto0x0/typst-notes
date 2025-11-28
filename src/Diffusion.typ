@@ -1,6 +1,7 @@
 // #set text(font: "Noto Sans SC")
 #set heading(numbering: "1.")
 #outline()
+#set math.equation(numbering: "a.")
 
 = Diffusion Model
 
@@ -130,6 +131,67 @@ $
 = Score-based Diffusion Model & Langevin dynamics
 
 ==  Langevin dynamics
+
+=== Boltzmann distribution
+
+统计力学的玻尔兹曼分布（Boltzmann distribution）指出一个系统的状态分布为
+
+$
+  p_i prop exp(-epsilon_i / (k T))
+$ <eq:boltzmann>
+
+其中 $epsilon_i$ 是状态 $i$ 的能量，$k$ 是玻尔兹曼常数，$T$ 是温度.
+
+=== Langevin equation
+
+而 Langevin equation 描述的是粒子在（一维）势能场中的布朗运动，
+
+$
+  dif x_t = -1/gamma nabla_x U(x_t) dif t + sqrt((2 k T) / gamma) dif W_t
+$ <eq:langevin>
+
+其中
+
+- $x$ 是粒子位置
+- $U(x)$ 是势能函数
+- $gamma$ 是阻尼系数
+- $W_t$ 是标准 Wiener 过程：$W_(t+Delta) = W_t + NN(0, Delta)$
+
+根据 Boltzmann distribution
+
+$
+  U(x) = - k T log p(x) + "constant",
+$
+
+代入得
+
+$
+  dif x_t &= (k T)/gamma nabla_x log p(x_t) dif t + sqrt((2 k T) / gamma) dif W_t \
+  &= (k T)/gamma nabla_x log p(x_t) dif t + sqrt((2 k T) / gamma) dif W_t
+$
+
+方程在离散时间 $x_k := x(k tau)$ 下的形式为
+
+$
+  x_(k+1) - x_k &= - (k T)/gamma tau nabla_x log p(x_t) + sqrt((2k T)/gamma tau) xi quad &, xi ~ NN(0, I) \
+  &= - eta nabla_x log p(x_t) + sqrt(2 eta) xi &, xi ~ NN(0, I)
+$
+
+其中 $eta = (k T)/gamma tau$ 是步长. 回忆 $x_t$ 描述的是粒子的随机位置，因此
+
+$
+  x_k ~ p(x)
+$
+
+即已知对数梯度 $nabla log p(x)$ 时，Langevin dynamics 迭代的过程可以对分布 $p(x)$ 采样。
+
+观察迭代形式，这实际上是一个带随机扰动的对数梯度上升过程，梯度项使得粒子趋向于高概率区域，而随机扰动则保证了采样的多样性.
+
+=== Simulated Annealing
+
+实际上，如果令玻尔兹曼分布 (@eq:boltzmann) 中势能不变，$T$ 逐渐收敛至 $0$, 则分布收敛到单点分布 $p(x) = delta(x - x^*)$，其中 $x^* = arg min_x U(x)$ 是势能的最小值点, 此时 Langevin equation (@eq:langevin) 中的随机扰动项收敛至 $0$，Langevin dynamics 退化为势能的对数梯度下降. 而温度 $T$ 的收敛速度控制了采样过程的随机性，快速的降温会导致探索不足，陷入局部势能极小值，反之则有更大概率达到势能全局最小值。这种模拟降温过程的方法即为*模拟退火*（Simulated Annealing）.
+
+==  Score-based Diffusion Model
 
 定义 score 函数，即数据分布的对数梯度：
 
